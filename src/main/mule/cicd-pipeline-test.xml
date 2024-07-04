@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="02fbc48a-d3e7-41fb-b582-79275821f8df" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="cicd-pipeline-testFlow" doc:id="a4d50949-8c4f-4b4a-83f5-0fbb77d55184" >
+		<http:listener doc:name="Listener" doc:id="25bc281b-a15b-499d-8c90-80d5e440d904" config-ref="HTTP_Listener_config" path="/check"/>
+		<logger level="INFO" doc:name="StartLogger" doc:id="905ba88f-f5e7-4e5c-823e-ce15703586bb" message='#["Start of flow "++(flow.name as String)]' />
+		<set-payload value='#["CICD pipeline-rollback check"]' doc:name="Set Payload" doc:id="5a6ba17e-8964-4635-bfdf-f2eb48ade709" />
+		<logger level="INFO" doc:name="EndLogger" doc:id="20f4c879-fb70-420d-8bf7-b6d32c7c5843" message='#["End of flow "++(flow.name as String)]'/>
+	</flow>
+</mule>
