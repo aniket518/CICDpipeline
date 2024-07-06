@@ -27,7 +27,7 @@
 				<configuration>
 					<cloudHubDeployment>
 						<muleVersion>4.4.0</muleVersion>
-						<username>${userame}</username>
+						<username>${username}</username>
 						<password>${password}</password>
 						<applicationName>cicd-pipeline-test-v1</applicationName>
 						<environment>Sandbox</environment>
