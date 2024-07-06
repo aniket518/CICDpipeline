@@ -13,7 +13,7 @@ stages{
 	steps { 
 		echo 'Deploying mule project due to the latest code commit…' 
 		echo 'Deploying to the configured environment….' 
-		bat 'mvn clean deploy -DmuleDeploy  -DmuleDeploy -DPLATFORM_USERNAME=${ANYPOINT_CREDENTIALS_USR} -DPLATFORM_PASSWORD=${ANYPOINT_CREDENTIALS_PSW} -Danypoint.platform.client_id=e81e94ecd8cc4e4485fac0e951c6b0d0 -Danypoint.platform.client_secret=f689692BAbf44F34837B8BD1d763816A -Dmule.key=root -Dmule.env=dev'
+		bat 'mvn clean deploy -DmuleDeploy  -DmuleDeploy -Dusername=${ANYPOINT_CREDENTIALS_USR} -Dpassword=${ANYPOINT_CREDENTIALS_PSW} -Danypoint.platform.client_id=e81e94ecd8cc4e4485fac0e951c6b0d0 -Danypoint.platform.client_secret=f689692BAbf44F34837B8BD1d763816A -Dmule.key=root -Dmule.env=dev'
 		}  
 	} 
 } 
