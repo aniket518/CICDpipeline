@@ -1,0 +1,15 @@
+#%RAML 1.0
+title: cicd-pipeline-test
+documentation:
+  - title: This is API for test purpose.
+    content: Quering from Salesforce.
+
+/records:
+  get:
+    description: This is a get method for record resource.
+
+    responses:
+      200:
+        body:
+          application/json:
+            example: !include Examples/response.json

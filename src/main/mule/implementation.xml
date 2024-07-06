@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:salesforce="http://www.mulesoft.org/schema/mule/salesforce"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/salesforce http://www.mulesoft.org/schema/mule/salesforce/current/mule-salesforce.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="implementationFlow" doc:id="aab83292-d730-4de9-86f3-9aadce5dbf16" >
+		<logger level="INFO" doc:name="StartLogger" doc:id="051e1748-93d0-4968-a8ad-3764ba934f38" message='#["Start of flow "++(flow.name as String)]' />
+		<salesforce:query doc:name="Query" doc:id="11acc14c-e561-4ed0-9acd-e4fcbfc9525e" config-ref="Salesforce_Config">
+			<salesforce:salesforce-query ><![CDATA[SELECT Age__c,Id__c,JobRole__c,Name__c FROM EmployeeRecord__c]]></salesforce:salesforce-query>
+		</salesforce:query>
+		<ee:transform doc:name="JSON" doc:id="a0a73569-bf28-404d-97dd-b7b403f1c74c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<logger level="INFO" doc:name="EndLogger" doc:id="e5103441-4591-4b45-9543-6326fd5ce044" message='#["End of flow "++(flow.name as String)]'/>
+	</flow>
+</mule>
