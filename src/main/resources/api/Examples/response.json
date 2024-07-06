@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 101,
+    "Name":"Asish",
+    "Age": 27,
+    "JobRole": "MuleSoft Developer"
+  },
+  {
+    "Id": 102,
+    "Name":"Vishnu",
+    "Age": 27,
+    "JobRole": "MuleSoft Developer"
+  }
+]
