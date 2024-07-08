@@ -1,20 +1,49 @@
-pipeline{  
-agent any 
-stages{ 
-	stage('Build Application') { 
-		steps { 
-			bat 'mvn clean install' 
-		} 
-	} 
-	stage('Deploy to CloudHub') { 
-		environment { 
-			ANYPOINT_CREDENTIALS = credentials(' anypointplatformcredentials	') 
-		} 
-	steps { 
-		echo 'Deploying mule project due to the latest code commit…' 
-		echo 'Deploying to the configured environment….' 
-		bat 'mvn clean deploy -DmuleDeploy  -DmuleDeploy -Dusername=${ANYPOINT_CREDENTIALS_USR} -Dpassword=${ANYPOINT_CREDENTIALS_PSW} -Danypoint.platform.client_id=e81e94ecd8cc4e4485fac0e951c6b0d0 -Danypoint.platform.client_secret=f689692BAbf44F34837B8BD1d763816A -Dmule.key=root -Dmule.env=dev'
-		}  
-	} 
-} 
-} 
+pipeline {
+    agent any
+    
+    environment {
+        GIT_URL = 'https://github.com/aniket518/CICDpipeline.git' // URL of your Git repository
+        JOB_NAME = 'pipeline-test'               // Name of the Jenkins job
+        OLD_VERSION_COMMIT = '#5'       // Commit hash of the old job version
+		ANYPOINT_CREDENTIALS = credentials(' anypointplatformcredentials ')
+    }
+
+    stages {
+        stage('Checkout Old Job Version') {
+            steps {
+                script {
+                    // Checkout the old version of the job configuration
+                    checkout([$class: 'GitSCM', branches: [[name: OLD_VERSION_COMMIT]], 
+                              userRemoteConfigs: [[url: GIT_URL]]])
+                }
+            }
+        }
+
+        stage('Update Jenkins Job') {
+            steps {
+                script {
+                    // Load the old job configuration
+                    def jobConfigXml = readFile("${JOB_NAME}/config.xml")
+                    
+                    // Update the Jenkins job with the old configuration
+                    def job = Jenkins.instance.getItemByFullName(JOB_NAME)
+                    job.updateByXml(new ByteArrayInputStream(jobConfigXml.getBytes('UTF-8')))
+                    
+                    // Save the updated job configuration
+                    job.save()
+                }
+				echo 'Deploying to the configured environment'
+				bat 'mvn clean deploy -DmuleDeploy  -DmuleDeploy -Dusername=${ANYPOINT_CREDENTIALS_USR} -Dpassword=${ANYPOINT_CREDENTIALS_PSW} -Danypoint.platform.client_id=53aa6c1afc1c474a89f230ec7f5997ea -Danypoint.platform.client_secret=f90D193cF88a477b88F2f57274e35366 -Dmule.key=root'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Job rollback to the old version completed successfully.'
+        }
+        failure {
+            echo 'Job rollback to the old version failed.'
+        }
+    }
+}
