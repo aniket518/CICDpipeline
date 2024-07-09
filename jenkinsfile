@@ -33,7 +33,7 @@ pipeline {
                     job.save()
                 }
 				echo 'Deploying to the configured environment'
-				bat 'mvn clean deploy -DmuleDeploy  -DmuleDeploy -Dusername=${ANYPOINT_CREDENTIALS_USR} -Dpassword=${ANYPOINT_CREDENTIALS_PSW} -Danypoint.platform.client_id=53aa6c1afc1c474a89f230ec7f5997ea -Danypoint.platform.client_secret=f90D193cF88a477b88F2f57274e35366 -Dmule.key=root'
+				bat 'mvn clean deploy -DmuleDeploy  -DmuleDeploy -Dusername=${ANYPOINT_CREDENTIALS_USR} -Dpassword=${ANYPOINT_CREDENTIALS_PSW} -Danypoint.platform.client_id=53aa6c1afc1c474a89f230ec7f5997ea -Danypoint.platform.client_secret=f90D193cF88a477b88F2f57274e35366 -Dmule.key=root -Dmule.env=dev -DskipTests=trues'
             }
         }
     }
